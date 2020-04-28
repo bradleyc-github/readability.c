@@ -1,0 +1,102 @@
+#include <cs50.h>
+#include <ctype.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+
+//function declaration
+int Coleman_Liau(int userLetter, int userSentence, int userWord);
+
+int main(void)
+{
+
+    int letterCounter = 0;
+    int wordCounter = 0;
+    int sentenceCounter = 0;
+    int grade = 0;
+
+    //get user text
+    string userText = get_string("Text: ");
+
+    for (int i = 0; i < strlen(userText); i++)
+    {
+        //counting letters
+        if (isalpha(userText[i]) != 0)
+        {
+            letterCounter++;
+        }
+
+        //counting words
+        if (isspace(userText[i]) != 0)
+        {
+            wordCounter++;
+        }
+
+
+        //counting sentences
+        if (userText[i] == '.')
+        {
+            sentenceCounter++;
+        }
+
+        if (userText[i] == '?')
+        {
+            sentenceCounter++;
+        }
+
+        if (userText[i] == '!')
+        {
+            sentenceCounter++;
+        }
+
+
+    }
+    //Here to count for the last word since there is no space after the last word.
+    wordCounter += 1;
+
+
+    if (letterCounter == 0)
+    {
+        wordCounter = 0;
+    }
+
+    //use function to find grade
+    grade = Coleman_Liau(letterCounter, sentenceCounter, wordCounter);
+
+    if (grade < 1)
+    {
+        printf("Before Grade 1\n");
+    }
+
+    else if (grade >= 16)
+    {
+        printf("Grade 16+\n");
+    }
+    else
+    {
+        printf("Grade %i\n", grade);
+    }
+
+
+}
+
+
+
+int Coleman_Liau(int userLetter, int userSentence, int userWord)
+{
+    float L = 0.0;
+    float S = 0.0;
+    float index = 0;
+
+    L = userLetter * (100.0 / userWord);
+
+    S = userSentence * (100.00 / userWord);
+
+
+    //finding the index and then rounding it before returning it
+    index = (0.0588 * L) - (0.296 * S) - 15.8;
+    index = round(index);
+
+    return index;
+
+}
